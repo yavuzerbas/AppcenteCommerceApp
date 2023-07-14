@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">AppcenteCommerceApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="home_page_slogan">We Offer the Best Product for your Skin</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="which_store">Hangi Mağazada Var?</string>
+</resources>
