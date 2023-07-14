@@ -16,26 +16,5 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        fetchHomePageProducts()
-    }
-    fun fetchHomePageProducts() {
-        NetworkHelper.productService.getHomePageProducts().enqueue(object :
-            Callback<BaseResponse<ProductResponse>?> {
-            override fun onResponse(
-                call: Call<BaseResponse<ProductResponse>?>,
-                response: Response<BaseResponse<ProductResponse>?>
-            ) {
-                if (response.isSuccessful) {
-                    val fetchedProducts = response.body()?.result
-
-                } else {
-                    // TODO handle error
-                }
-            }
-            override fun onFailure(call: Call<BaseResponse<ProductResponse>?>, t: Throwable) {
-                // TODO handle failure
-            }
-        })
-
     }
 }

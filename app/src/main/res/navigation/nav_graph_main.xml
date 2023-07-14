@@ -20,4 +20,9 @@
         android:name="com.example.appcentecommerceapp.WhichStoreMapFragment"
         android:label="fragment_which_store_map"
         tools:layout="@layout/fragment_which_store_map" />
+    <fragment
+        android:id="@+id/shoppingCartFragment"
+        android:name="com.example.appcentecommerceapp.ShoppingCartFragment"
+        android:label="fragment_shopping_cart"
+        tools:layout="@layout/fragment_shopping_cart" />
 </navigation>

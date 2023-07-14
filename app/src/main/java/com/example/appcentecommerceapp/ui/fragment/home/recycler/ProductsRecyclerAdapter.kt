@@ -10,9 +10,9 @@ import com.example.appcentecommerceapp.databinding.ItemHomeProductBinding
 class ProductsRecyclerAdapter(
     private val recyclerViewItemClickListener: RecyclerViewItemClickListener<ProductResponse?>
 ) : RecyclerView.Adapter<ProductsViewHolder>() {
-    private var products : ArrayList<ProductResponse>? = null
+    private var products : List<ProductResponse>? = null
 
-    fun setProducts(products: ArrayList<ProductResponse>?){
+    fun setProducts(products: List<ProductResponse>?){
         this.products = products
         notifyDataSetChanged()
     }

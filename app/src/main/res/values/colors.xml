@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="light_green_header">#FFF0FFFB</color>
     <color name="green_add_to_cart_button">#FF00CC96</color>
+    <color name="green_buy">#FF00CC96</color>
     <color name="gray_old_price">#FFBDBDBD</color>
     <color name="gray_which_store_button">#FFF6F7FB</color>
 </resources>

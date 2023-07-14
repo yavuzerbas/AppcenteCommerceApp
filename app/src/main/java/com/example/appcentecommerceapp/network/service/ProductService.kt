@@ -8,6 +8,6 @@ import retrofit2.http.GET
 interface ProductService {
 
     @GET("products")
-    fun getHomePageProducts() : Call<BaseResponse<ProductResponse>?>
+    fun getHomePageProducts() : Call<BaseResponse<List<ProductResponse>?>>
 
 }
