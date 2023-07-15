@@ -3,6 +3,7 @@ package com.example.appcentecommerceapp.ui.fragment.home
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.appcentecommerceapp.base.fragment.BaseFragment
 import com.example.appcentecommerceapp.base.listener.RecyclerViewItemClickListener
@@ -43,9 +44,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private val recyclerViewItemClickListener = object : RecyclerViewItemClickListener<ProductResponse?>{
         override fun onClick(item: ProductResponse?) {
-            //TODO("Not yet implemented")
+            navigateToProductDetailFragment(item)
         }
+    }
 
+    private fun navigateToProductDetailFragment(productResponse: ProductResponse?) {
+        findNavController().navigate(
+            HomeFragmentDirections
+                .actionHomeFragmentToProductDetailFragment(productResponse)
+        )
     }
 
     private fun getHomePageProducts() {
@@ -61,15 +68,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         }
                     }
                 }
-
                 override fun onFailure(
                     call: Call<BaseResponse<List<ProductResponse>?>>,
                     t: Throwable
                 ) {
                     TODO("Not yet implemented")
                 }
-
-
             }
         )
     }
