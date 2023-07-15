@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/shoppingCartFragment"
-        android:name="com.example.appcentecommerceapp.ShoppingCartFragment"
+        android:name="com.example.appcentecommerceapp.ui.fragment.shoppingcart.ShoppingCartFragment"
         android:label="fragment_shopping_cart"
         tools:layout="@layout/fragment_shopping_cart" />
 </navigation>

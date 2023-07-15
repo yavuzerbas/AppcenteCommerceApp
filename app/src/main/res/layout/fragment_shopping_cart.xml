@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ShoppingCartFragment">
+    tools:context=".ui.fragment.shoppingcart.ShoppingCartFragment">
 
     <TextView
         android:id="@+id/tv_shopping_cart"
@@ -40,7 +40,7 @@
         android:text="@string/buy"
         android:textAllCaps="false"
         />
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -48,6 +48,7 @@
         app:layout_constraintBottom_toBottomOf="@id/btn_buy"
         app:layout_constraintTop_toTopOf="@id/btn_buy"
         android:layout_marginEnd="20dp"
+        android:padding="15dp"
         android:background="@drawable/bg_price"
         tools:text="$224"
         />
