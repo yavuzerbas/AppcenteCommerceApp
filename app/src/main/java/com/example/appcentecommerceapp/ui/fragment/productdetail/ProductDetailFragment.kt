@@ -2,8 +2,10 @@ package com.example.appcentecommerceapp.ui.fragment.productdetail
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.appcentecommerceapp.base.fragment.BaseFragment
+import com.example.appcentecommerceapp.data.model.reponse.CurrentStore
 import com.example.appcentecommerceapp.data.utils.extensions.loadImage
 import com.example.appcentecommerceapp.databinding.FragmentProductDetailBinding
 
@@ -15,6 +17,8 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(Fragmen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prepareUi()
+        whichStoresButtonOnClick()
+        backButtonOnClick()
     }
 
     private fun prepareUi() {
@@ -24,4 +28,25 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(Fragmen
             binding?.tvProductPrice?.text = it.newPrice.toString()
         }
     }
+
+    private fun backButtonOnClick() {
+        //btn_back in main activity click handle
+    }
+    private fun whichStoresButtonOnClick(){
+        binding?.btnWhichStore?.setOnClickListener {
+            args.product?.currentStores?.let { currentStores ->
+                navigateToWhichStoreMapFragment(
+                    currentStores
+                )
+            }
+        }
+    }
+    private fun navigateToWhichStoreMapFragment(currentStores : List<CurrentStore>){
+        findNavController().navigate(ProductDetailFragmentDirections
+            .actionProductDetailFragmentToWhichStoreMapFragment(
+                currentStores.toTypedArray()
+            )
+        )
+    }
+
 }

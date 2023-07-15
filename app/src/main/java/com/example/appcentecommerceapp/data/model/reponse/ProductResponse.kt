@@ -13,5 +13,12 @@ data class ProductResponse(
     val productImage: String?,
     val quantity: Long?,
     val currentStore: String?,
+    var currentStores: List<CurrentStore>
+) : Parcelable
+
+@Parcelize
+data class CurrentStore(
+    val latitude : Double?,
+    val longitude : Double?
 ) : Parcelable
 

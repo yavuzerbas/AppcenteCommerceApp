@@ -23,12 +23,20 @@
             android:name="product"
             app:argType="com.example.appcentecommerceapp.data.model.reponse.ProductResponse"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_productDetailFragment_to_whichStoreMapFragment"
+            app:destination="@id/whichStoreMapFragment" />
     </fragment>
     <fragment
         android:id="@+id/whichStoreMapFragment"
-        android:name="com.example.appcentecommerceapp.WhichStoreMapFragment"
+        android:name="com.example.appcentecommerceapp.ui.fragment.whichstore.WhichStoreMapFragment"
         android:label="fragment_which_store_map"
-        tools:layout="@layout/fragment_which_store_map" />
+        tools:layout="@layout/fragment_which_store_map" >
+        <argument
+            android:name="currentStores"
+            app:argType="com.example.appcentecommerceapp.data.model.reponse.CurrentStore[]"
+            />
+    </fragment>
     <fragment
         android:id="@+id/shoppingCartFragment"
         android:name="com.example.appcentecommerceapp.ShoppingCartFragment"

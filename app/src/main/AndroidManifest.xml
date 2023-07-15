@@ -12,6 +12,11 @@
         android:theme="@style/Theme.AppcenteCommerceApp"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBWSBwz9Rn4YhlMQTnvinQwBz98DfIm6iQ" />
+
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true">
