@@ -2,7 +2,9 @@ package com.example.appcentecommerceapp.ui.fragment.shoppingcart
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.appcentecommerceapp.R
 import com.example.appcentecommerceapp.base.fragment.BaseFragment
 import com.example.appcentecommerceapp.base.listener.RecyclerViewItemRemoveClickListener
 import com.example.appcentecommerceapp.base.model.BaseResponse
@@ -33,7 +35,12 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
     }
 
     private fun handleBuyButtonBehaviour() {
-        //TODO("Not yet implemented")
+        if(products.isNullOrEmpty()){
+            deactivateBuyButton()
+        }
+        else{
+            activateBuyButton()
+        }
     }
 
     private fun setTotalPrice() {
@@ -152,6 +159,21 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
         products?.clear()
         binding?.tvPrice?.setPrice("0")
         shoppingCartRecyclerAdapter.removedAllProduct()
+        deactivateBuyButton()
     }
+    private fun deactivateBuyButton(){
+        binding?.btnBuy?.apply {
+            isEnabled = false
+            background = ContextCompat.getDrawable(context, R.drawable.bg_buy_deactivated)
+        }
+    }
+
+    private fun activateBuyButton(){
+        binding?.btnBuy?.apply {
+            isEnabled = true
+            background = ContextCompat.getDrawable(context, R.drawable.bg_buy)
+        }
+    }
+
 
 }
