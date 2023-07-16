@@ -1,11 +1,13 @@
 package com.example.appcentecommerceapp.ui.fragment.productdetail
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.appcentecommerceapp.base.fragment.BaseFragment
 import com.example.appcentecommerceapp.base.model.BaseResponse
+import com.example.appcentecommerceapp.base.notifier.CartStatusNotifier
 import com.example.appcentecommerceapp.data.model.reponse.CartResponse
 import com.example.appcentecommerceapp.data.model.reponse.CurrentStore
 import com.example.appcentecommerceapp.data.utils.extensions.loadImage
@@ -20,6 +22,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(Fragmen
 
     private val args : ProductDetailFragmentArgs by navArgs()
 
+    private var cartStatusNotifier: CartStatusNotifier? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prepareUi()
@@ -27,7 +30,19 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(Fragmen
         backButtonOnClick()
         addCartButtonOnClick()
     }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is CartStatusNotifier) {
+            cartStatusNotifier = context
+        } else {
+            throw RuntimeException("$context must implement CartStatusNotifier")
+        }
+    }
 
+    override fun onDetach() {
+        super.onDetach()
+        cartStatusNotifier = null
+    }
     private fun prepareUi() {
         args.product?.let {
             binding?.ivProduct?.loadImage(it.productImage)
@@ -71,7 +86,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(Fragmen
                 ) {
                     when{
                         response.isSuccessful ->{
-
+                            cartStatusNotifier?.updateCartStatus(false)
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 package com.example.appcentecommerceapp.ui.fragment.shoppingcart
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -8,6 +9,7 @@ import com.example.appcentecommerceapp.R
 import com.example.appcentecommerceapp.base.fragment.BaseFragment
 import com.example.appcentecommerceapp.base.listener.RecyclerViewItemRemoveClickListener
 import com.example.appcentecommerceapp.base.model.BaseResponse
+import com.example.appcentecommerceapp.base.notifier.CartStatusNotifier
 import com.example.appcentecommerceapp.data.model.reponse.CartResponse
 import com.example.appcentecommerceapp.data.model.reponse.ProductResponse
 import com.example.appcentecommerceapp.data.utils.extensions.setPrice
@@ -21,6 +23,7 @@ import retrofit2.Response
 class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentShoppingCartBinding::inflate) {
     private lateinit var shoppingCartRecyclerAdapter: ShoppingCartRecyclerAdapter
     private var products : MutableList<ProductResponse>? = null
+    private var cartStatusNotifier: CartStatusNotifier? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prepareShoppingCartAdapter()
@@ -28,10 +31,25 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
         buyButtonOnClickListener()
         getShoppingCartProducts()
     }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is CartStatusNotifier) {
+            cartStatusNotifier = context
+        } else {
+            throw RuntimeException("$context must implement CartStatusNotifier")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        cartStatusNotifier = null
+    }
+
 
     private fun prepareUI(){
         setTotalPrice()
         handleBuyButtonBehaviour()
+        cartStatusNotifier?.updateCartStatus(products.isNullOrEmpty())
     }
 
     private fun handleBuyButtonBehaviour() {
@@ -68,7 +86,6 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
     private val recyclerViewItemRemoveClickListener = object : RecyclerViewItemRemoveClickListener<ProductResponse?>{
         override fun onRemoveClick(item: ProductResponse?) {
             item?.let {
-                //shoppingCartRecyclerAdapter.removeProduct(it)
                 removeProductFromShoppingCart(it)
             }
         }
@@ -174,6 +191,4 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
             background = ContextCompat.getDrawable(context, R.drawable.bg_buy)
         }
     }
-
-
 }

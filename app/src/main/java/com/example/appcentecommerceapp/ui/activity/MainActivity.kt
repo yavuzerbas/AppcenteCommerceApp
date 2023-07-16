@@ -7,6 +7,7 @@ import com.example.appcentecommerceapp.R
 import android.view.View
 import androidx.navigation.fragment.NavHostFragment
 import com.example.appcentecommerceapp.base.model.BaseResponse
+import com.example.appcentecommerceapp.base.notifier.CartStatusNotifier
 import com.example.appcentecommerceapp.data.model.reponse.CartResponse
 import com.example.appcentecommerceapp.databinding.ActivityMainBinding
 import com.example.appcentecommerceapp.network.NetworkHelper
@@ -14,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),CartStatusNotifier {
     private lateinit var binding: ActivityMainBinding
     private val navController by lazy {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view_tag) as NavHostFragment
@@ -76,5 +77,9 @@ class MainActivity : AppCompatActivity() {
                 }
 
             })
+    }
+
+    override fun updateCartStatus(isEmpty: Boolean) {
+        binding.viewShoppingCartStatus.visibility = if (isEmpty) View.INVISIBLE else View.VISIBLE
     }
 }
