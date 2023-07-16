@@ -55,7 +55,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 ) {
                     when{
                         response.isSuccessful ->{
-                            var products = response.body()?.result
+                            val products = response.body()?.result
                             products?.forEach{
                                 it.currentStores = listOf(
                                     CurrentStore(39.9208, 32.8541), // Kocatepe Cami

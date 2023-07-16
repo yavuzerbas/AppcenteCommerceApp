@@ -1,20 +1,61 @@
 package com.example.appcentecommerceapp.ui.fragment.shoppingcart
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import com.example.appcentecommerceapp.R
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.appcentecommerceapp.base.fragment.BaseFragment
+import com.example.appcentecommerceapp.base.listener.RecyclerViewItemRemoveClickListener
+import com.example.appcentecommerceapp.base.model.BaseResponse
+import com.example.appcentecommerceapp.data.model.reponse.CartResponse
+import com.example.appcentecommerceapp.data.model.reponse.ProductResponse
 import com.example.appcentecommerceapp.databinding.FragmentShoppingCartBinding
+import com.example.appcentecommerceapp.network.NetworkHelper
+import com.example.appcentecommerceapp.ui.fragment.shoppingcart.recycler.ShoppingCartRecyclerAdapter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentShoppingCartBinding::inflate) {
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shopping_cart, container, false)
+    private lateinit var shoppingCartRecyclerAdapter: ShoppingCartRecyclerAdapter
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        prepareShoppingCartAdapter()
+        getShoppingCartProducts()
     }
+
+    private fun prepareShoppingCartAdapter() {
+        shoppingCartRecyclerAdapter = ShoppingCartRecyclerAdapter(recyclerViewItemRemoveClickListener)
+        binding?.rvShoppingCart?.layoutManager = LinearLayoutManager(context)
+        binding?.rvShoppingCart?.adapter = shoppingCartRecyclerAdapter
+    }
+
+    private val recyclerViewItemRemoveClickListener = object : RecyclerViewItemRemoveClickListener<ProductResponse?>{
+        override fun onRemoveClick(item: ProductResponse?) {
+            item?.let {
+                shoppingCartRecyclerAdapter.removeProduct(it)
+            }
+        }
+
+    }
+    private fun getShoppingCartProducts(){
+        NetworkHelper.cartService.getShoppingCartProducts()
+            .enqueue(object : Callback<BaseResponse<CartResponse?>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<CartResponse?>>,
+                    response: Response<BaseResponse<CartResponse?>>
+                ) {
+                    when{
+                        response.isSuccessful -> {
+                            shoppingCartRecyclerAdapter.setProducts(response.body()?.result?.products)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<CartResponse?>>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+    }
+
 }

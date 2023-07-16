@@ -1,6 +1,7 @@
 package com.example.appcentecommerceapp.network
 
 import com.example.appcentecommerceapp.BuildConfig
+import com.example.appcentecommerceapp.network.service.CartService
 import com.example.appcentecommerceapp.network.service.ProductService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -11,6 +12,7 @@ object NetworkHelper {
     private lateinit var retrofit: Retrofit
 
     lateinit var productService: ProductService
+    lateinit var cartService: CartService
 
     init {
         retrofitBuilder()
@@ -26,6 +28,7 @@ object NetworkHelper {
 
     private fun bindServices() {
         productService = retrofit.create(ProductService::class.java)
+        cartService = retrofit.create(CartService::class.java)
     }
     private fun getOkHttpClient(): OkHttpClient {
         val httpClient = OkHttpClient.Builder()
