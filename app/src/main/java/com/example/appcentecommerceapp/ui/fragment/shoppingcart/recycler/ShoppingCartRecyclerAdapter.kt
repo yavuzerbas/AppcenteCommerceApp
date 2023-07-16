@@ -20,6 +20,9 @@ class ShoppingCartRecyclerAdapter(
     fun removedProduct(index : Int){
         notifyItemRemoved(index)
     }
+    fun removedAllProduct(){
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingCartViewHolder {
         val binding = ItemShoppingCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)

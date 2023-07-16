@@ -16,4 +16,7 @@ interface CartService {
     @GET("removeproduct/2/{id}")
     fun removeProductFromShoppingCart(@Path("id") id: String) : Call<BaseResponse<CartResponse?>>
 
+    @GET("clearcart/2")
+    fun clearCart() : Call<BaseResponse<CartResponse?>>
+
 }

@@ -22,8 +22,18 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prepareShoppingCartAdapter()
-        setTotalPrice()
+        prepareUI()
+        buyButtonOnClickListener()
         getShoppingCartProducts()
+    }
+
+    private fun prepareUI(){
+        setTotalPrice()
+        handleBuyButtonBehaviour()
+    }
+
+    private fun handleBuyButtonBehaviour() {
+        //TODO("Not yet implemented")
     }
 
     private fun setTotalPrice() {
@@ -68,7 +78,7 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
                         response.isSuccessful -> {
                             products = response.body()?.result?.products?.toMutableList()
                             shoppingCartRecyclerAdapter.setProducts(products)
-                            setTotalPrice()
+                            prepareUI()
                         }
                     }
                 }
@@ -90,7 +100,7 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
                         response.isSuccessful ->{
                             val index = removeProduct(productResponse)
                             shoppingCartRecyclerAdapter.removedProduct(index)
-                            setTotalPrice()
+                            prepareUI()
                         }
                     }
                 }
@@ -101,7 +111,7 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
 
             })
     }
-    fun removeProduct(product: ProductResponse): Int {
+    private fun removeProduct(product: ProductResponse): Int {
         var index : Int = -1
         products?.let {
             index = it.indexOf(product)
@@ -111,6 +121,37 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
             }
         }
         return index
+    }
+    private fun buyButtonOnClickListener(){
+        binding?.btnBuy?.setOnClickListener {
+            buyProducts()
+        }
+    }
+    private fun buyProducts(){
+        NetworkHelper.cartService.clearCart()
+            .enqueue(object : Callback<BaseResponse<CartResponse?>>{
+                override fun onResponse(
+                    call: Call<BaseResponse<CartResponse?>>,
+                    response: Response<BaseResponse<CartResponse?>>
+                ) {
+                    when{
+                        response.isSuccessful -> {
+                            removeAllProducts()
+                            prepareUI()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<CartResponse?>>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+    }
+    private fun removeAllProducts(){
+        products?.clear()
+        binding?.tvPrice?.setPrice("0")
+        shoppingCartRecyclerAdapter.removedAllProduct()
     }
 
 }
