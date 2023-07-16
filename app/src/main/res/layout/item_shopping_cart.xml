@@ -16,13 +16,14 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/bg_shopping_card"
         >
+        <!-- android:background="@drawable/bg_cancel_button" -->
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_cancel"
             android:layout_width="48dp"
             android:layout_height="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/bg_cancel_button"
+            android:background="@color/white"
             android:layout_margin="1dp"
             android:src="@drawable/baseline_cancel_24"/>
         <androidx.appcompat.widget.AppCompatImageView
@@ -45,7 +46,7 @@
             app:layout_constraintBottom_toTopOf="@id/tv_item_price"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
-            android:textStyle="bold"
+
             android:textColor="@color/black"
             android:textSize="18sp"
             tools:text="Sleepless Night 10 g"/>

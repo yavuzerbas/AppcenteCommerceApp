@@ -8,6 +8,7 @@ import com.example.appcentecommerceapp.base.listener.RecyclerViewItemRemoveClick
 import com.example.appcentecommerceapp.base.model.BaseResponse
 import com.example.appcentecommerceapp.data.model.reponse.CartResponse
 import com.example.appcentecommerceapp.data.model.reponse.ProductResponse
+import com.example.appcentecommerceapp.data.utils.extensions.setPrice
 import com.example.appcentecommerceapp.databinding.FragmentShoppingCartBinding
 import com.example.appcentecommerceapp.network.NetworkHelper
 import com.example.appcentecommerceapp.ui.fragment.shoppingcart.recycler.ShoppingCartRecyclerAdapter
@@ -17,11 +18,29 @@ import retrofit2.Response
 
 class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentShoppingCartBinding::inflate) {
     private lateinit var shoppingCartRecyclerAdapter: ShoppingCartRecyclerAdapter
+    private var products : MutableList<ProductResponse>? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prepareShoppingCartAdapter()
+        setTotalPrice()
         getShoppingCartProducts()
     }
+
+    private fun setTotalPrice() {
+        binding?.tvPrice?.setPrice(calculateTotalPrice())
+    }
+
+    private fun calculateTotalPrice(): String {
+        var totalPrice : Double = 0.0
+        val currentProducts = products
+        if(!currentProducts.isNullOrEmpty()){
+            currentProducts.forEach{
+                totalPrice += it.newPrice ?: 0.0
+            }
+        }
+        return totalPrice.toString()
+    }
+
 
     private fun prepareShoppingCartAdapter() {
         shoppingCartRecyclerAdapter = ShoppingCartRecyclerAdapter(recyclerViewItemRemoveClickListener)
@@ -32,7 +51,8 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
     private val recyclerViewItemRemoveClickListener = object : RecyclerViewItemRemoveClickListener<ProductResponse?>{
         override fun onRemoveClick(item: ProductResponse?) {
             item?.let {
-                shoppingCartRecyclerAdapter.removeProduct(it)
+                //shoppingCartRecyclerAdapter.removeProduct(it)
+                removeProductFromShoppingCart(it)
             }
         }
 
@@ -46,7 +66,9 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
                 ) {
                     when{
                         response.isSuccessful -> {
-                            shoppingCartRecyclerAdapter.setProducts(response.body()?.result?.products)
+                            products = response.body()?.result?.products?.toMutableList()
+                            shoppingCartRecyclerAdapter.setProducts(products)
+                            setTotalPrice()
                         }
                     }
                 }
@@ -56,6 +78,39 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
                 }
 
             })
+    }
+    private fun removeProductFromShoppingCart(productResponse: ProductResponse){
+        NetworkHelper.cartService.removeProductFromShoppingCart(productResponse.id.toString())
+            .enqueue(object : Callback<BaseResponse<CartResponse?>>{
+                override fun onResponse(
+                    call: Call<BaseResponse<CartResponse?>>,
+                    response: Response<BaseResponse<CartResponse?>>
+                ) {
+                    when{
+                        response.isSuccessful ->{
+                            val index = removeProduct(productResponse)
+                            shoppingCartRecyclerAdapter.removedProduct(index)
+                            setTotalPrice()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<CartResponse?>>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+    }
+    fun removeProduct(product: ProductResponse): Int {
+        var index : Int = -1
+        products?.let {
+            index = it.indexOf(product)
+            if (index != -1) {
+                it.removeAt(index)
+                //notifyItemRemoved(index)
+            }
+        }
+        return index
     }
 
 }

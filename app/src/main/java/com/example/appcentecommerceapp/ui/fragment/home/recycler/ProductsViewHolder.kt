@@ -4,6 +4,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.appcentecommerceapp.base.listener.RecyclerViewItemClickListener
 import com.example.appcentecommerceapp.data.model.reponse.ProductResponse
 import com.example.appcentecommerceapp.data.utils.extensions.loadImage
+import com.example.appcentecommerceapp.data.utils.extensions.setOldPrice
+import com.example.appcentecommerceapp.data.utils.extensions.setPrice
 import com.example.appcentecommerceapp.databinding.ItemHomeProductBinding
 
 class ProductsViewHolder(
@@ -14,9 +16,8 @@ class ProductsViewHolder(
         binding.ivProduct.loadImage(item?.productImage)
         binding.tvProductName.text = item?.productName
         binding.tvProductType.text = item?.type
-        binding.tvProductOldPrice.text = item?.oldPrice.toString()//"$\${item?.oldPrice}"
-        binding.tvProductNewPrice.text = item?.newPrice.toString()
-
+        binding.tvProductOldPrice.setOldPrice(item?.oldPrice.toString())
+        binding.tvProductNewPrice.setPrice(item?.newPrice.toString())
         binding.root.setOnClickListener{
             recyclerViewItemClickListener.onClick(item)
         }

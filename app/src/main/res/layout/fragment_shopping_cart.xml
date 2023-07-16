@@ -52,6 +52,9 @@
         android:padding="15dp"
         android:background="@drawable/bg_price"
         tools:text="$224"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

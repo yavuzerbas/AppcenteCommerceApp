@@ -13,19 +13,12 @@ class ShoppingCartRecyclerAdapter(
 
     private var products: MutableList<ProductResponse>? = null
 
-    fun setProducts(products: List<ProductResponse>?) {
-        this.products = products?.toMutableList()
+    fun setProducts(products: MutableList<ProductResponse>?) {
+        this.products = products//?.toMutableList()
         notifyDataSetChanged()
     }
-
-    fun removeProduct(product: ProductResponse) {
-        products?.let {
-            val index = it.indexOf(product)
-            if (index != -1) {
-                it.removeAt(index)
-                notifyItemRemoved(index)
-            }
-        }
+    fun removedProduct(index : Int){
+        notifyItemRemoved(index)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingCartViewHolder {

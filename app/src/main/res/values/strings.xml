@@ -8,4 +8,6 @@
     <string name="which_store">Hangi Mağazada Var?</string>
     <string name="shopping_cart">Shopping Cart</string>
     <string name="buy">Buy</string>
+    <string name="added_to_basket">Sepete Eklendi</string>
+    <string name="back_to_main_menu">Anasayfaya Git</string>
 </resources>

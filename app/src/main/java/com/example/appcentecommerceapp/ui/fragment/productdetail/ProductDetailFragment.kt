@@ -5,9 +5,15 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.appcentecommerceapp.base.fragment.BaseFragment
+import com.example.appcentecommerceapp.base.model.BaseResponse
+import com.example.appcentecommerceapp.data.model.reponse.CartResponse
 import com.example.appcentecommerceapp.data.model.reponse.CurrentStore
 import com.example.appcentecommerceapp.data.utils.extensions.loadImage
 import com.example.appcentecommerceapp.databinding.FragmentProductDetailBinding
+import com.example.appcentecommerceapp.network.NetworkHelper
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(FragmentProductDetailBinding::inflate) {
@@ -19,6 +25,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(Fragmen
         prepareUi()
         whichStoresButtonOnClick()
         backButtonOnClick()
+        addCartButtonOnClick()
     }
 
     private fun prepareUi() {
@@ -47,6 +54,33 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(Fragmen
                 currentStores.toTypedArray()
             )
         )
+    }
+    private fun addCartButtonOnClick(){
+        binding?.btnAddCart?.setOnClickListener {
+            args.product?.id?.let {
+                addProductToShoppingCart(it.toString())
+            }
+        }
+    }
+    private fun addProductToShoppingCart(id: String){
+        NetworkHelper.cartService.addProductToShoppingCart(id.toString())
+            .enqueue(object : Callback<BaseResponse<CartResponse?>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<CartResponse?>>,
+                    response: Response<BaseResponse<CartResponse?>>
+                ) {
+                    when{
+                        response.isSuccessful ->{
+
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<CartResponse?>>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+
+            })
     }
 
 }

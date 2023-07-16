@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.appcentecommerceapp.base.listener.RecyclerViewItemRemoveClickListener
 import com.example.appcentecommerceapp.data.model.reponse.ProductResponse
 import com.example.appcentecommerceapp.data.utils.extensions.loadImage
+import com.example.appcentecommerceapp.data.utils.extensions.setPrice
 import com.example.appcentecommerceapp.databinding.ItemShoppingCartBinding
 
 class ShoppingCartViewHolder(
@@ -14,7 +15,8 @@ class ShoppingCartViewHolder(
 
         binding.ivItem.loadImage(item?.productImage)
         binding.tvItemName.text = item?.productName
-        binding.tvItemPrice.text = item?.newPrice.toString()
+        //binding.tvItemPrice.text = item?.newPrice.toString()
+        binding.tvItemPrice.setPrice(item?.newPrice.toString())
 
         binding.btnCancel.setOnClickListener{
             recyclerViewItemRemoveClickListener.onRemoveClick(item)
