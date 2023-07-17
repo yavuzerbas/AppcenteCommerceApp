@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.appcentecommerceapp.R
 import com.example.appcentecommerceapp.base.fragment.BaseFragment
 import com.example.appcentecommerceapp.base.model.BaseResponse
 import com.example.appcentecommerceapp.base.notifier.CartStatusNotifier
@@ -13,12 +14,13 @@ import com.example.appcentecommerceapp.data.model.reponse.CurrentStore
 import com.example.appcentecommerceapp.data.utils.extensions.loadImage
 import com.example.appcentecommerceapp.databinding.FragmentProductDetailBinding
 import com.example.appcentecommerceapp.network.NetworkHelper
+import com.example.appcentecommerceapp.ui.fragment.dialog.ReturnHomeDialogFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(FragmentProductDetailBinding::inflate) {
+class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(FragmentProductDetailBinding::inflate), ReturnHomeDialogFragment.ReturnHomeListener {
 
     private val args : ProductDetailFragmentArgs by navArgs()
 
@@ -85,8 +87,11 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(Fragmen
                     response: Response<BaseResponse<CartResponse?>>
                 ) {
                     when{
-                        response.isSuccessful ->{
+                        response.isSuccessful -> {
                             cartStatusNotifier?.updateCartStatus(false)
+                            ReturnHomeDialogFragment(this@ProductDetailFragment,
+                                "Product added to cart. Press button to return home.")
+                                .show(parentFragmentManager, "ReturnHomeDialog")
                         }
                     }
                 }
@@ -98,4 +103,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(Fragmen
             })
     }
 
+    override fun onReturnHome() {
+        findNavController().popBackStack(R.id.homeFragment, false)
+    }
 }

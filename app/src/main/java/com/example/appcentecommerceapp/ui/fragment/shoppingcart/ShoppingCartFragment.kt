@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.appcentecommerceapp.R
 import com.example.appcentecommerceapp.base.fragment.BaseFragment
@@ -15,12 +16,13 @@ import com.example.appcentecommerceapp.data.model.reponse.ProductResponse
 import com.example.appcentecommerceapp.data.utils.extensions.setPrice
 import com.example.appcentecommerceapp.databinding.FragmentShoppingCartBinding
 import com.example.appcentecommerceapp.network.NetworkHelper
+import com.example.appcentecommerceapp.ui.fragment.dialog.ReturnHomeDialogFragment
 import com.example.appcentecommerceapp.ui.fragment.shoppingcart.recycler.ShoppingCartRecyclerAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentShoppingCartBinding::inflate) {
+class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentShoppingCartBinding::inflate), ReturnHomeDialogFragment.ReturnHomeListener {
     private lateinit var shoppingCartRecyclerAdapter: ShoppingCartRecyclerAdapter
     private var products : MutableList<ProductResponse>? = null
     private var cartStatusNotifier: CartStatusNotifier? = null
@@ -162,6 +164,9 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
                         response.isSuccessful -> {
                             removeAllProducts()
                             prepareUI()
+                            ReturnHomeDialogFragment(this@ShoppingCartFragment,
+                                "Products bought successfully. Press button to return home.")
+                                .show(parentFragmentManager, "ReturnHomeDialog")
                         }
                     }
                 }
@@ -190,5 +195,9 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
             isEnabled = true
             background = ContextCompat.getDrawable(context, R.drawable.bg_buy)
         }
+    }
+
+    override fun onReturnHome() {
+        findNavController().popBackStack(R.id.homeFragment, false)
     }
 }
